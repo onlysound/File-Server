@@ -115,7 +115,11 @@ class song{
     if($sond_info["year"]=='')$sond_info["year"]='0';
     //FUNCTION         `song_add`(  suser INTEGER(11), sauthor CHAR(64),     sname CHAR(64),       sgenre CHAR(32),       slen INTEGER,       sbit INTEGER(11),     syear INTEGER(11),     ssize INTEGER(11),       sfile_name cHAR(32), sloc CHAR(64))
       $ans=mysql_query("SELECT song_add(".$user_id.",\"".$sond_info['author']."\",\"".$sond_info['title']."\",\"".$sond_info['genre']."\",".$sond_info['length'].",".$sond_info['bitrate'].",".$sond_info["year"].",".$sond_info["filesize"].",\"".$file_name."\",".$location.");",$this->get_connection());
-    $ans=mysql_fetch_row($ans);
+      if(mysql_errno()){
+          
+          return false;
+      }
+      $ans=mysql_fetch_row($ans);
          if($ans[0]!=1){
            $song_num=$ans[0];
       $ans=mysql_query("SELECT song_tech_insert(".$song_num.",".$tecnical_info['second'].",".$tecnical_info['third'].",".$tecnical_info['fourth'].");",$this->get_connection());
@@ -795,6 +799,17 @@ class player{
   }
 }
 
+function logging($text){
+
+    $pathToHostingClass=pathinfo(realpath(__FILE__));
+
+    $log_file="bad_log-$(date +%m-%Y)";
+    $log_adress=$pathToHostingClass["dirname"].'/../logs/';
+    $command="echo \"$(date '+%d-%m-%Y %H:%M:%S.%N') '".$text."'\" >> ".$log_adress.$log_file;
+    echo $command;
+    exec($command);
+    return true;
+}
 function mysql_array(&$mysql_result){
 
     for($i=0;$i<mysql_num_rows($mysql_result);$i++){

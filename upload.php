@@ -4,6 +4,7 @@ include_once('classes.php');
 
 function get_answer_back($answer,$type_income='h')
 {
+  //if($answer=='ID_NOT_SETTED')var_dump($_POST);
 
   $type = (isset($_REQUEST['type'])) ? $_REQUEST['type'] : $type_income;
 
@@ -30,7 +31,10 @@ function get_answer_back($answer,$type_income='h')
 
 //var_dump($_SESSION);
 if(isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) $id=$_REQUEST['id'];
-else get_answer_back('ID_NOT_SETTED');
+else{
+    echo logging('Bad Request: '.'\"ID_NOT_SETTED\"'.'Request Dump: '.print_r($_REQUEST, true));
+    get_answer_back('ID_NOT_SETTED');
+}
 
 if(isset($_REQUEST['type']) and ($_REQUEST['type']=='h' OR $_REQUEST['type']=='H' OR $_REQUEST['type']=='f' OR $_REQUEST['type']=='F')) $type=$_REQUEST['type'];
 else $type='h';
