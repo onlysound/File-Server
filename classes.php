@@ -806,9 +806,9 @@ function logging($text){
     $log_file="bad_log-$(date +%m-%Y)";
     $log_adress=$pathToHostingClass["dirname"].'/../logs/';
     $command="echo \"$(date '+%d-%m-%Y %H:%M:%S.%N') '".$text."'\" >> ".$log_adress.$log_file;
-    echo $command;
-    exec($command);
-    return true;
+    //echo $command;
+    
+    return exec($command);
 }
 function mysql_array(&$mysql_result){
 
